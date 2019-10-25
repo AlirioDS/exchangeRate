@@ -26,4 +26,3 @@ function getBuyers(currency) {
 }
 
 export default { getSellers, getBuyers }
-
