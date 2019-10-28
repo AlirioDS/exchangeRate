@@ -8,7 +8,7 @@ class LocalbitcoinsClient
       @json = JSON.parse(sellers_response(currency))
       json_sellers += @json.dig("data", "ad_list")
     end
-
+  
     json_sellers
   end
   

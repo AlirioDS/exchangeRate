@@ -21,7 +21,7 @@
             :fields="fieldsRates"
           ).text-center
       b-row
-        b-col(cols='6' sm='6')
+        b-col(cols='6' sm='6').pt-3
           b-card(v-if='statusSellers' ,bg-variant="danger", text-variant="white")
             .search-bar
               b-form-input(
@@ -33,7 +33,7 @@
               span.search-icon
                 font-awesome-icon(icon='search').text-danger
 
-        b-col(cols='6' sm='6')
+        b-col(cols='6' sm='6').pt-3
           b-card(v-if='statusBuyers' ,bg-variant="success", text-variant="white")
             .search-bar
               b-form-input(
@@ -170,7 +170,8 @@
         filterBuyers: null,
         selectMode: 'single',
         selectedSellers: [],
-        selectedBuyers: []
+        selectedBuyers: [],
+        responsiveTable: false
       }
     },
     methods: {
@@ -181,6 +182,16 @@
         serviceApi.getSellers(this.selectSeller)
           .then(function (sellers){
             self.sellersLoading = false
+            sellers.forEach(
+              function trustedSellers(seller, index){
+                if(seller["data"]["profile"]["feedback_score"] <= 96 ){
+                  delete seller[index]
+                } else if (parseInt(seller["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
+                {
+                  delete seller[index]
+                }
+              }
+            )
             self.sellers = sellers
             self.statusSellers = true
         })
@@ -192,6 +203,17 @@
         serviceApi.getBuyers(this.selectBuyer)
           .then(function (buyers){
             self.buyersLoading = false
+            buyers.forEach(
+              function trusteduyes(buyer, index){
+                if(buyer["data"]["profile"]["feedback_score"] <= 96 ){
+                  delete buyer[index]
+                } else if (parseInt(buyer["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
+                {
+                  delete buyer[index]
+                }
+              }
+            )
+
             self.buyers = buyers
             self.statusBuyers = true
           })

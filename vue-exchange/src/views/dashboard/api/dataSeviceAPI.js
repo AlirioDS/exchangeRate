@@ -1,5 +1,5 @@
-const URLCurrencySellers = `https://exchange111.herokuapp.com/api/v1/localbitcoins/service/sellers`
-const URLCurrencyBuyers = `https://exchange111.herokuapp.com//api/v1/localbitcoins/service/buyers`
+const URLCurrencySellers = `http://localhost:3000/api/v1/localbitcoins/service/sellers`
+const URLCurrencyBuyers = `http://localhost:3000/api/v1/localbitcoins/service/buyers`
 
 function getSellers(currency) {
   return fetch(URLCurrencySellers, {
