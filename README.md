@@ -1,24 +1,9 @@
-# README
+!EXCHANGE RATE!
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a rapid search from sellers/buyers from localbitcoins to obtain rates to resellers Currency working: CLP(Pesos Chilenos), PEN(Soles Peruanos), VES(Bolivares Venezolano)
 
-Things you may want to cover:
+This work with VUE.JS and Rails API
 
-* Ruby version
+Staging Server: https://exchange111.herokuapp.com/#/
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Production Server: Coming Soon ...
