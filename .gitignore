@@ -25,8 +25,5 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-# ignore cors.rb if is not change to deploy
-config/initializers/cors.rb
-
 # ignore JS variables client service
-vue-exchange/src/views/dashboard/api/dataServiceAPI.js
+/vue-exchange/src/views/dashboard/api/dataSeviceAPI.js
