@@ -20,6 +20,68 @@
             :items="rates"
             :fields="fieldsRates"
           ).text-center
+        b-col.pt-2(cols='12' sm='12' v-if="statusConversion")
+          b-card(
+            header="Calculo de Conversion"
+            border-variant="secondary"
+            header-bg-variant="secondary"
+            header-text-variant="white"
+          )
+            b-container
+              b-row
+                b-col(cols="5" sm="5" md="3").pt-3
+                  b-input-group
+                    b-input-group-prepend
+                      span.input-group-text
+                        font-awesome-icon(icon='hand-holding-usd')
+                    b-form-input(
+                      type="number"
+                      placeholder="Tasa"
+                      v-model='customRate'
+                    )
+                b-col(cols="7" sm="7" md="5").pt-3
+                  b-input-group
+                    b-input-group-prepend
+                      span.input-group-text
+                        font-awesome-icon(icon='money-check-alt')
+                    b-form-input(
+                      type="number"
+                      placeholder="Ingrese Monto del Cliente"
+                      v-model='clientAmount'
+                    )
+                b-col(cols="12" sm="6" md="4").pt-3
+                  b-input-group
+                    b-input-group-prepend
+                      span.input-group-text
+                        font-awesome-icon(:icon="['fab', 'bitcoin']")
+                    b-form-input(
+                      type="number"
+                      placeholder="Monto en BTC"
+                      disabled=''
+                      v-model="dataConversion.btcBuyer"
+                    )
+                b-col(cols="12" sm="6" md="6").pt-3
+                  b-input-group
+                    b-input-group-prepend
+                      span.input-group-text
+                        font-awesome-icon(icon='sign-in-alt').text-success
+                    b-form-input(
+                      type="number"
+                      placeholder="Monto a Transferir Compra"
+                      disabled=''
+                      v-model="dataConversion.localCurrencySeller"
+                    )
+                b-col(cols="12" sm="6" md="6").pt-3
+                  b-input-group
+                    b-input-group-prepend
+                      span.input-group-text
+                        font-awesome-icon(icon='sign-out-alt').text-danger
+                    b-form-input(
+                      type="number"
+                      placeholder="Monto a Transferir Venta"
+                      disabled=''
+                      v-model=`dataConversion["mountToTransferSell"]`
+                    )
       b-row
         b-col(cols='6' sm='6').pt-3
           b-card(v-if='statusSellers' ,bg-variant="danger", text-variant="white")
@@ -62,19 +124,19 @@
             template(v-slot:table-busy='')
               .text-center.text-danger.my-2
                 b-spinner(style='width: 3rem; height: 3rem;', label='Large Spinner', type='grow')
-
+            
             template(v-slot:cell(data.bank_name)="bankName")
               b.text-secondary {{ bankName.value.replace(/[^a-zA-Z]+/g, ' ') }}
-
+            
             template(v-slot:cell(data.min_amount)="minAmount")
               b.text-secondary {{ minAmount.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
-
+            
             template(v-slot:cell(data.max_amount)="maxAmount")
               b.text-secondary {{ maxAmount.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
-
+            
             template(v-slot:cell(actions.public_view)="url")
               b-button(class="btn-danger" :href="url.value", target="_blank") Ir
-
+        
         b-col(cols='6' sm='6').pt-3
           b-table(
             hover=''
@@ -92,12 +154,16 @@
             template(v-slot:table-busy='')
               .text-center.text-success.my-2
                 b-spinner(style='width: 3rem; height: 3rem;', label='Large Spinner', type='grow')
+            
             template(v-slot:cell(data.bank_name)="bankName")
               b.text-secondary {{ bankName.value.replace(/[^a-zA-Z]+/g, ' ') }}
+            
             template(v-slot:cell(data.min_amount)="data")
               b.text-secondary {{ data.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
+            
             template(v-slot:cell(data.max_amount)="data")
               b.text-secondary {{ data.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
+            
             template(v-slot:cell(actions.public_view)="url")
               b-button(class="btn-success" :href="url.value", target="_blank") Ir
 </template>
@@ -122,7 +188,8 @@
           { name: 'Moneda', value: null},
           { name: 'CLP', value: 'clp' },
           { name: 'VES', value: 'ves' },
-          { name: 'PEN', value: 'pen' }
+          { name: 'PEN', value: 'pen' },
+          { name: 'COP', value: 'cop' }
         ],
         selectSeller: null,
         selectBuyer: null,
@@ -143,7 +210,6 @@
             key: 'sixPorcent',
             label: '6%'
           },
-
         ],
         rates: [],
         sellers: [],
@@ -171,7 +237,10 @@
         selectMode: 'single',
         selectedSellers: [],
         selectedBuyers: [],
-        responsiveTable: false
+        statusConversion: false,
+        customRate: '',
+        clientAmount: '',
+        dataConversion: []
       }
     },
     methods: {
@@ -213,7 +282,6 @@
                 }
               }
             )
-
             self.buyers = buyers
             self.statusBuyers = true
           })
@@ -221,7 +289,8 @@
       onRowSelectedSeller(sellers) {
         this.selectedSellers = sellers
         if (this.selectedBuyers.length && this.selectedSellers.length) {
-          this.rates = [calculateRate(this.selectedSellers, this.selectedBuyers)]
+          this.rates = [calculateRate.getSeller(this.selectedSellers)]
+          this.statusConversion = true
         } else {
           this.rates = []
         }
@@ -229,9 +298,19 @@
       onRowSelectedBuyer(buyers) {
         this.selectedBuyers = buyers
         if (this.selectedSellers.length && this.selectedBuyers.length) {
-          this.rates = [calculateRate(this.selectedSellers, this.selectedBuyers)]
+          this.rates = [calculateRate.getRate(this.selectedSellers, this.selectedBuyers)]
+          this.statusConversion = true
         } else {
           this.rates = []
+        }
+      },
+      conversionCalculate() {
+        if (this.clientAmount.length && this.customRate.length) {
+          this.dataConversion =
+            calculateRate.customRate(this.clientAmount, this.customRate, this.selectedSellers, this.selectedBuyers)
+        }
+        else {
+          this.dataConversion = []
         }
       }
     },
@@ -246,6 +325,12 @@
           this.buyersData()
         }
       },
+      clientAmount(){
+        this.conversionCalculate()
+      },
+      customRate(){
+        this.conversionCalculate()
+      }
     }
   }
 </script>
