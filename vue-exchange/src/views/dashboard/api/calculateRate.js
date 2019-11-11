@@ -16,7 +16,10 @@ function getRate(seller, buyer) {
   let sixPorcent = (rate * 0.06)
   sixPorcent = (rate - sixPorcent).toFixed(2)
 
-  const rates = { rate: rate, tenPorcent: tenPorcent, eightPorcent: eightPorcent, sixPorcent: sixPorcent}
+  let threePorcent = (rate * 0.03)
+  threePorcent = (rate - threePorcent).toFixed(2)
+
+  const rates = { rate: rate, tenPorcent: tenPorcent, eightPorcent: eightPorcent, sixPorcent: sixPorcent, threePorcent: threePorcent}
   return rates
 }
 
@@ -25,7 +28,7 @@ function customRate(clientAmount, customRate, seller, buyer) {
 
   let buyerTempPrice = JSON.parse(buyer[0]["data"]["temp_price"]).toFixed(2)
   let sellerTemPrice = JSON.parse(seller[0]["data"]["temp_price"]).toFixed(2)
-  
+
   let btcBuyer = (mountToTransferSell / buyerTempPrice).toFixed(10)
   let localCurrencySeller = (btcBuyer * sellerTemPrice).toFixed(2)
 

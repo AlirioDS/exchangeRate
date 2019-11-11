@@ -4,7 +4,12 @@
     b-container(fluid).pt-3
       b-row
         b-col(cols='12' sm='6').pt-2
-          b-card.text-center(no-body='')
+          b-card.text-center(
+            header="Compra / Venta"
+            header-text-variant="white"
+            no-body=''
+            class="bg-maastricht-blue"
+            )
             .bg-light.text-dark.px-2
               div.d-flex.flex-row.justify-content-center.py-3
                 b-form-select.mx-1(v-model='selectSeller')
@@ -21,10 +26,10 @@
             :fields="fieldsRates"
           ).text-center
         b-col.pt-2(cols='12' sm='12' v-if="statusConversion")
-          b-card(
+          b-card.text-center(
             header="Calculo de Conversion"
-            border-variant="secondary"
-            header-bg-variant="secondary"
+            border-variant="dark"
+            header-bg-variant="dark"
             header-text-variant="white"
           )
             b-container
@@ -210,6 +215,10 @@
             key: 'sixPorcent',
             label: '6%'
           },
+          {
+            key: 'threePorcent',
+            label: '3%'
+          },
         ],
         rates: [],
         sellers: [],
@@ -346,5 +355,20 @@
     position: absolute;
     top: 8px;
     left: 8px;
+  }
+  .bg-maastricht-blue {
+    background-color: #011627;
+  }
+  .bg-dark {
+    background-color: #011627 !important;
+  }
+  .bg-danger {
+    background-color: #E71D36 !important;
+  }
+  .bg-success {
+    background-color: #2EC4B6 !important;
+  }
+  .text-success {
+    color: #2EC4B6 !important;
   }
 </style>
