@@ -38,7 +38,7 @@
                   b-input-group
                     b-input-group-prepend
                       span.input-group-text
-                        font-awesome-icon(icon='hand-holding-usd')
+                        font-awesome-icon(icon='coins')
                     b-form-input(
                       type="number"
                       placeholder="Tasa"
@@ -65,6 +65,17 @@
                       disabled=''
                       v-model="dataConversion.btcBuyer"
                     )
+                b-col(cols="12" sm="6" md="4").pt-3
+                  b-input-group
+                    b-input-group-prepend
+                      span.input-group-text
+                        font-awesome-icon(icon='hand-holding-usd')
+                    b-form-input(
+                      type="number"
+                      placeholder="Ganancia"
+                      disabled=''
+                      v-model="dataConversion.gain"
+                    )
                 b-col(cols="12" sm="6" md="6").pt-3
                   b-input-group
                     b-input-group-prepend
@@ -89,7 +100,7 @@
                     )
       b-row
         b-col(cols='6' sm='6').pt-3
-          b-card(v-if='statusSellers' ,bg-variant="danger", text-variant="white")
+          b-card(v-if='statusSellers' ,bg-variant="success", text-variant="white")
             .search-bar
               b-form-input(
                 v-model='filterSellers'
@@ -98,19 +109,28 @@
                 placeholder='Buscar'
               )
               span.search-icon
-                font-awesome-icon(icon='search').text-danger
+                font-awesome-icon(icon='search').text-success
+            b-form-group.mb-0.pt-2(label='Filtrar Por:', label-cols-sm='3', label-align-sm='right', label-size='sm')
+              b-form-checkbox-group.mt-1(v-model='filterOnSellers')
+              b-form-checkbox(value='data.bank_name') Nombre de Banco
+              b-form-checkbox(value='data.min_amount') Monto Minimo
 
         b-col(cols='6' sm='6').pt-3
-          b-card(v-if='statusBuyers' ,bg-variant="success", text-variant="white")
+          b-card(v-if='statusBuyers' ,bg-variant="danger", text-variant="white")
             .search-bar
               b-form-input(
                 v-model='filterBuyers'
+                filter-ignored-fields="data.min_amount"
                 type='search'
                 id='filterBuyers'
                 placeholder='Buscar'
               )
               span.search-icon
-                font-awesome-icon(icon='search').text-success
+                font-awesome-icon(icon='search').text-danger
+            b-form-group.mb-0.pt-2(label='Filtrar Por:', label-cols-sm='3', label-align-sm='right', label-size='sm')
+              b-form-checkbox-group.mt-1(v-model='filterOnBuyers')
+              b-form-checkbox(value='data.bank_name') Nombre de Banco
+              b-form-checkbox(value='data.min_amount') Monto Minimo
       b-row
         b-col(cols='6' sm='6').pt-3
           b-table(
@@ -120,15 +140,16 @@
             :busy="sellersLoading"
             :fields="fields"
             :filter="filterSellers"
+            :filterIncludedFields="filterOnSellers"
             ref="selectableTable"
             selectable
             :select-mode="selectMode"
-            selected-variant="danger"
+            selected-variant="success"
             @row-selected="onRowSelectedSeller"
           )
             template(v-slot:table-busy='')
-              .text-center.text-danger.my-2
-                b-spinner(style='width: 3rem; height: 3rem;', label='Large Spinner', type='grow')
+              .text-center.text-success.my-2
+                b-spinner(style='width: 10rem; height: 10rem;', label='Large Spinner', type='grow')
             
             template(v-slot:cell(data.bank_name)="bankName")
               b.text-secondary {{ bankName.value.replace(/[^a-zA-Z]+/g, ' ') }}
@@ -140,7 +161,7 @@
               b.text-secondary {{ maxAmount.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
             
             template(v-slot:cell(actions.public_view)="url")
-              b-button(class="btn-danger" :href="url.value", target="_blank") Ir
+              b-button(class="btn-success" :href="url.value", target="_blank") Ir
         
         b-col(cols='6' sm='6').pt-3
           b-table(
@@ -150,15 +171,16 @@
             :busy='buyersLoading'
             :fields="fields"
             :filter='filterBuyers'
+            :filterIncludedFields="filterOnBuyers"
             ref="selectableTable"
             selectable
             :select-mode="selectMode"
-            selected-variant="success"
+            selected-variant="danger"
             @row-selected="onRowSelectedBuyer"
           )
             template(v-slot:table-busy='')
-              .text-center.text-success.my-2
-                b-spinner(style='width: 3rem; height: 3rem;', label='Large Spinner', type='grow')
+              .text-center.text-danger.my-2
+                b-spinner(style='width: 10rem; height: 10rem;', label='Large Spinner', type='grow')
             
             template(v-slot:cell(data.bank_name)="bankName")
               b.text-secondary {{ bankName.value.replace(/[^a-zA-Z]+/g, ' ') }}
@@ -170,7 +192,7 @@
               b.text-secondary {{ data.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
             
             template(v-slot:cell(actions.public_view)="url")
-              b-button(class="btn-success" :href="url.value", target="_blank") Ir
+              b-button(class="btn-danger" :href="url.value", target="_blank") Ir
 </template>
 
 <script>
@@ -249,7 +271,9 @@
         statusConversion: false,
         customRate: '',
         clientAmount: '',
-        dataConversion: []
+        dataConversion: [],
+        filterOnSellers: [],
+        filterOnBuyers: []
       }
     },
     methods: {
@@ -298,7 +322,7 @@
       onRowSelectedSeller(sellers) {
         this.selectedSellers = sellers
         if (this.selectedBuyers.length && this.selectedSellers.length) {
-          this.rates = [calculateRate.getSeller(this.selectedSellers)]
+          this.rates = [calculateRate.getRate(this.selectedSellers, this.selectedBuyers)]
           this.statusConversion = true
         } else {
           this.rates = []

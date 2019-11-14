@@ -32,8 +32,9 @@ function customRate(clientAmount, customRate, seller, buyer) {
   let btcBuyer = (mountToTransferSell / buyerTempPrice).toFixed(10)
   let localCurrencySeller = (btcBuyer * sellerTemPrice).toFixed(2)
 
+  let gain = (clientAmount - localCurrencySeller).toFixed(2)
 
-  const customRates = { btcBuyer: btcBuyer, localCurrencySeller: localCurrencySeller, mountToTransferSell: mountToTransferSell }
+  const customRates = { btcBuyer: btcBuyer, localCurrencySeller: localCurrencySeller, mountToTransferSell: mountToTransferSell, gain: gain }
   return customRates
 }
 
