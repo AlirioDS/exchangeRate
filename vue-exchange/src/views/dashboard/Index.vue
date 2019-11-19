@@ -3,6 +3,16 @@
     Navbar
     b-container(fluid).pt-3
       b-row
+        b-col(cols='12' sm='12').pt-2
+         b-alert.pt-3(
+          :show="dismissCountDown"
+          dismissible
+          fade
+          variant="danger"
+          @dismiss-count-down="countDownChanged"
+        )
+          | Actualice la Pagina Nuevamente ó Espere {{ dismissCountDown }} Segundos...
+      b-row
         b-col(cols='12' sm='6').pt-2
           b-card.text-center(
             header="Compra / Venta"
@@ -273,7 +283,10 @@
         clientAmount: '',
         dataConversion: [],
         filterOnSellers: [],
-        filterOnBuyers: []
+        filterOnBuyers: [],
+        updatePage: false,
+        dismissSecs: 10,
+        dismissCountDown: 0
       }
     },
     methods: {
@@ -282,20 +295,24 @@
         this.sellersLoading = true
         self.statusSellers = false
         serviceApi.getSellers(this.selectSeller)
-          .then(function (sellers){
-            self.sellersLoading = false
-            sellers.forEach(
-              function trustedSellers(seller, index){
-                if(seller["data"]["profile"]["feedback_score"] <= 96 ){
-                  delete seller[index]
-                } else if (parseInt(seller["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
-                {
-                  delete seller[index]
+          .then((sellers) => {
+            if (sellers.isAxiosError != true) {
+              self.sellersLoading = false
+              sellers.forEach(
+                function trustedSellers(seller, index){
+                  if(seller.data.profile.feedback_score <= 96 ){
+                    delete seller[index]
+                  } else if (parseInt(seller["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
+                  {
+                    delete seller[index]
+                  }
                 }
-              }
-            )
-            self.sellers = sellers
-            self.statusSellers = true
+              )
+              self.sellers = sellers
+              self.statusSellers = true
+            } else {
+              self.updatePage = true
+            }
         })
       },
       buyersData() {
@@ -304,19 +321,23 @@
         self.statusBuyers = false
         serviceApi.getBuyers(this.selectBuyer)
           .then(function (buyers){
-            self.buyersLoading = false
-            buyers.forEach(
-              function trusteduyes(buyer, index){
-                if(buyer["data"]["profile"]["feedback_score"] <= 96 ){
-                  delete buyer[index]
-                } else if (parseInt(buyer["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
-                {
-                  delete buyer[index]
+            if (buyers.isAxiosError != true) {
+              self.buyersLoading = false
+              buyers.forEach(
+                function trusteduyes(buyer, index){
+                  if(buyer["data"]["profile"]["feedback_score"] <= 96 ){
+                    delete buyer[index]
+                  } else if (parseInt(buyer["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
+                  {
+                    delete buyer[index]
+                  }
                 }
-              }
-            )
-            self.buyers = buyers
-            self.statusBuyers = true
+              )
+              self.buyers = buyers
+              self.statusBuyers = true
+            } else {
+              self.updatePage = true
+            }
           })
       },
       onRowSelectedSeller(sellers) {
@@ -345,6 +366,12 @@
         else {
           this.dataConversion = []
         }
+      },
+      countDownChanged(dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+        if (this.dismissCountDown == 0) {
+          location.reload()
+        }
       }
     },
     watch: {
@@ -363,6 +390,9 @@
       },
       customRate(){
         this.conversionCalculate()
+      },
+      updatePage(){
+        this.dismissCountDown = this.dismissSecs
       }
     }
   }
