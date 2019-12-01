@@ -359,7 +359,7 @@
         }
       },
       conversionCalculate() {
-        if (this.clientAmount.length && this.customRate.length) {
+        if (this.clientAmount.length && this.customRate.length && this.customRate != 0) {
           this.dataConversion =
             calculateRate.customRate(this.clientAmount, this.customRate, this.selectedSellers, this.selectedBuyers)
         }
