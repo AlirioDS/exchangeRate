@@ -226,7 +226,8 @@
           { name: 'CLP', value: 'clp' },
           { name: 'VES', value: 'ves' },
           { name: 'PEN', value: 'pen' },
-          { name: 'COP', value: 'cop' }
+          { name: 'COP', value: 'cop' },
+          { name: 'USD', value: 'usd' }
         ],
         selectSeller: null,
         selectBuyer: null,
