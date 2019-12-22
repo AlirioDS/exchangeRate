@@ -73,7 +73,7 @@
                       type="number"
                       placeholder="Monto en BTC"
                       disabled=''
-                      v-model="dataConversion.btcBuyer"
+                      v-model="dataConversion.btcToBuy"
                     )
                 b-col(cols="12" sm="6" md="4").pt-3
                   b-input-group
