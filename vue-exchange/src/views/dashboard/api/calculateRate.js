@@ -1,5 +1,4 @@
 function getRate(seller, buyer) {
-
   let rate = 0
   let tenPorcent = 0
   let eightPorcent = 0
@@ -50,7 +49,7 @@ function customRate(clientAmount, customRate, seller, buyer) {
   let localCurrencySeller = (btcToBuy * sellerTemPrice).toFixed(2)
   let gain = (clientAmount - localCurrencySeller).toFixed(2)
 
-  const customRates = { btcToBuy: btcToBuy, localCurrencySeller: localCurrencySeller, mountToTransferSell: mountToTransferSell, gain: gain }
+  const customRates = { btcToBuy, localCurrencySeller, mountToTransferSell, gain }
   return customRates
 }
 

@@ -12,6 +12,9 @@
           @dismiss-count-down="countDownChanged"
         )
           | Actualice la Pagina Nuevamente ó Espere {{ dismissCountDown }} Segundos...
+      b-row(v-if="rate_hardcode")
+        b-col(cols='12' sm='12').pt-2
+          | Tasa: {{ rate_hardcode }}
       b-row
         b-col(cols='12' sm='6').pt-2
           b-card.text-center(
@@ -287,7 +290,8 @@
         filterOnBuyers: [],
         updatePage: false,
         dismissSecs: 10,
-        dismissCountDown: 0
+        dismissCountDown: 0,
+        rate_hardcode: 0
       }
     },
     methods: {
@@ -295,17 +299,29 @@
         const self = this
         this.sellersLoading = true
         self.statusSellers = false
+        let only_one = false
         serviceApi.getSellers(this.selectSeller)
           .then((sellers) => {
             if (sellers.isAxiosError != true) {
               self.sellersLoading = false
               sellers.forEach(
-                function trustedSellers(seller, index){
+                (seller, index)=>{
                   if(seller.data.profile.feedback_score <= 96 ){
                     delete seller[index]
-                  } else if (parseInt(seller["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
-                  {
+                  } else if (parseInt(seller["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 ){
                     delete seller[index]
+                  } else if (seller.data.currency === "CLP" && seller.data.bank_name.toLowerCase().includes('banco estado')){
+                    let min_amount = parseInt(seller.data.min_amount)
+                    let max_amount = parseInt(seller.data.max_amount)
+                    let six_porcent = (6*max_amount) / 100
+                    let btc = parseFloat(seller.data.min_amount) / parseFloat(seller.data.temp_price)
+                    let usd_amount = btc * parseFloat(seller.data.temp_price_usd)
+                    
+                    if (min_amount <= six_porcent && usd_amount <= 15 && !only_one) {
+                      only_one = true
+                      this.selectedSellers = seller
+                      console.log(seller.actions.public_view)
+                    }
                   }
                 }
               )
@@ -320,17 +336,29 @@
         const self = this
         this.buyersLoading = true
         self.statusBuyers = false
+        let only_one = false
         serviceApi.getBuyers(this.selectBuyer)
-          .then(function (buyers){
+          .then((buyers)=>{
             if (buyers.isAxiosError != true) {
               self.buyersLoading = false
               buyers.forEach(
-                function trusteduyes(buyer, index){
+                (buyer, index)=>{
                   if(buyer["data"]["profile"]["feedback_score"] <= 96 ){
                     delete buyer[index]
                   } else if (parseInt(buyer["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
                   {
                     delete buyer[index]
+                  } else if (buyer.data.currency === "VES" && buyer.data.bank_name.toLowerCase().includes('banesco') && this.selectedSellers.data.currency === "CLP"){
+                    let min_amount = parseInt(buyer.data.min_amount)
+                    let max_amount = parseInt(buyer.data.max_amount)
+                    let six_porcent = (10*max_amount) / 100
+                    let btc = parseFloat(buyer.data.min_amount) / parseFloat(buyer.data.temp_price)
+                    let usd_amount = btc * parseFloat(buyer.data.temp_price_usd)
+                    
+                    if (min_amount <= six_porcent && usd_amount <= 30 && !only_one) {
+                      only_one = true
+                      this.rate_hardcode = ((buyer.data.temp_price / this.selectedSellers.data.temp_price) - (buyer.data.temp_price / this.selectedSellers.data.temp_price * 0.03)).toString().split('.')[0]
+                    }
                   }
                 }
               )

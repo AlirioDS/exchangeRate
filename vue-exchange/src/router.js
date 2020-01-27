@@ -10,6 +10,7 @@ export default new Router({
       path: '/',
       name: 'dashboard_path',
       component: Dashboard
-    },
-  ]
+    }
+  ],
+  mode: 'history'
 })
