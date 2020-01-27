@@ -348,16 +348,16 @@
                   } else if (parseInt(buyer["data"]["profile"]["trade_count"].replace("+", "").replace(" ", "")) < 100 )
                   {
                     delete buyer[index]
-                  } else if (buyer.data.currency === "VES" && buyer.data.bank_name.toLowerCase().includes('banesco') && this.selectedSellers.data.currency === "CLP"){
+                  } else if (buyer.data.currency === "VES" && buyer.data.bank_name.toLowerCase().includes('banesco') && self.selectSeller === "clp"){
                     let min_amount = parseInt(buyer.data.min_amount)
                     let max_amount = parseInt(buyer.data.max_amount)
                     let six_porcent = (10*max_amount) / 100
                     let btc = parseFloat(buyer.data.min_amount) / parseFloat(buyer.data.temp_price)
                     let usd_amount = btc * parseFloat(buyer.data.temp_price_usd)
-                    
-                    if (min_amount <= six_porcent && usd_amount <= 30 && !only_one) {
+                    if (min_amount <= six_porcent && usd_amount <= 24 && !only_one) {
                       only_one = true
                       this.rate_hardcode = ((buyer.data.temp_price / this.selectedSellers.data.temp_price) - (buyer.data.temp_price / this.selectedSellers.data.temp_price * 0.03)).toString().split('.')[0]
+                      console.log(buyer.actions.public_view)
                     }
                   }
                 }
