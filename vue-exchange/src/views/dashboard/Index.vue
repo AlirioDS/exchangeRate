@@ -303,7 +303,6 @@
         serviceApi.getSellers(this.selectSeller)
           .then((sellers) => {
             if (sellers.isAxiosError != true) {
-              self.sellersLoading = false
               sellers.forEach(
                 (seller, index)=>{
                   if(seller.data.profile.feedback_score <= 96 ){
@@ -327,6 +326,7 @@
               )
               self.sellers = sellers
               self.statusSellers = true
+              self.sellersLoading = false
             } else {
               self.updatePage = true
             }
@@ -340,7 +340,6 @@
         serviceApi.getBuyers(this.selectBuyer)
           .then((buyers)=>{
             if (buyers.isAxiosError != true) {
-              self.buyersLoading = false
               buyers.forEach(
                 (buyer, index)=>{
                   if(buyer["data"]["profile"]["feedback_score"] <= 96 ){
@@ -364,6 +363,7 @@
               )
               self.buyers = buyers
               self.statusBuyers = true
+              self.buyersLoading = false
             } else {
               self.updatePage = true
             }

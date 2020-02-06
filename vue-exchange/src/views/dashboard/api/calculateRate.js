@@ -33,7 +33,6 @@ function getRate(seller, buyer) {
 
 }
 
-
 function customRate(clientAmount, customRate, seller, buyer) {
   let mountToTransferSell = 0
   let sellerTemPrice = JSON.parse(seller[0]["data"]["temp_price"]).toFixed(2)
