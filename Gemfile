@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.5'
+ruby '2.7.1'
 
-gem 'rails', '~> 6.0.1'
+gem 'rails', '~> 6.0.3'
 gem 'pg'
-gem 'puma', '~> 3.11'
-gem 'bootsnap', '>= 1.4.2', require: false
+gem 'puma'
+gem 'bootsnap', '>= 1.4.6', require: false
 gem 'httparty'
 gem 'rack-cors'
 
@@ -21,9 +21,9 @@ group :development, :test do
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
