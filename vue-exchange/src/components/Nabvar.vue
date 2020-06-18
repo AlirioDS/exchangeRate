@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     b-navbar(toggleable='lg' type='dark' class='nabvar')
-      b-navbar-brand(href='#') QCambio
+      b-navbar-brand(href='#') PasserIT
 </template>
 
 <script>
