@@ -209,7 +209,7 @@
 </template>
 
 <script>
-  import Navbar from '../components/Nabvar.vue'
+  import Navbar from '../components/Navbar.vue'
   import Test from '../components/Test.vue'
   
   import serviceApi from '../services/dataSeviceAPI'
