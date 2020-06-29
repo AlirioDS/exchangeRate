@@ -19,9 +19,21 @@ export default {
     }
   ],
 
-  sellers: [],
-  sellersLoading: false,
-  sellerIsSelect: false,
-  buyers: [],
-  buyersLoading: false
+  customerAmount: null,
+
+  seller: [
+    { sellersLoading: false },
+    { sellerIsSelect: false },
+    { all: [] }
+  ],
+
+  buyer: [
+    { buyersLoading: false },
+    { buyerIsSelect: false },
+    { all: [] }
+  ],
+
+  modals: {
+    openModalSortingOptions: false
+  }
 }

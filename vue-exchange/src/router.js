@@ -3,6 +3,8 @@ import Router from 'vue-router'
 
 import Home from './pages/Home.vue'
 import LocalbitcoinsSorting from './pages/LocalbitcoinsSorting.vue'
+import SortingOptions from './components/modals/SortingOptions.vue'
+import TableAgents from './components/modals/TableAgents.vue'
 
 import Sorting from './pages/Sorting.vue'
 

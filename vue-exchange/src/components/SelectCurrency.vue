@@ -10,11 +10,11 @@
 
 <script>
   export default {
-    props: ['market'],
+    props: [ 'market' ],
     computed: {
       currencies() {
         return this.$store.state.currencies
-      },
+      }
     },
     methods: {
       getCurrency(currency) {
@@ -22,6 +22,9 @@
 
         if(currency != "") {
           this.$store.dispatch('getAllAgents', { currency, market })
+          
+          let openModalOption = true
+          this.$store.commit('MODALS', openModalOption)
         }
       }
     }
