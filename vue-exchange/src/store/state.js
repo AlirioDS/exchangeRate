@@ -11,27 +11,33 @@ export default {
   markets: [ 
     { 
       id: 1,
-      currencySeller: '' 
+      "buy-bitcoins-online": '' 
     }, 
     { 
       id: 2,
-      currencyBuyer: '' 
+      "sell-bitcoins-online": '' 
     }
   ],
 
-  customerAmount: null,
+  filterClient: {
+    isActive: false,
+    byAmount: "",
+  },
 
-  seller: [
-    { sellersLoading: false },
-    { sellerIsSelect: false },
-    { all: [] }
-  ],
+  agent: {
+    loading: false
+  },
 
-  buyer: [
-    { buyersLoading: false },
-    { buyerIsSelect: false },
-    { all: [] }
-  ],
+  seller: {
+    isSelect: false,
+    all: [],
+    filterByAmount: []
+  },
+
+  buyer: {
+    isSelect: false,
+    all: []
+  },
 
   modals: {
     openModalSortingOptions: false

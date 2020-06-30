@@ -5,7 +5,6 @@
     v-model="showModalTabletAgents"
     title="Agents Selection"
     headerClass="header-modal"
-    hideHeaderClose=true
     hide-footer
   )
     b-container.p-0
@@ -28,7 +27,21 @@
             :items="agents"
             :fields="fields"
             :filter="filterAgents"
+            :busy="this.$store.state.agent.loading"
           )
+            template(v-slot:table-busy='')
+              .text-center.text-success.my-2
+                b-spinner(style='width: 10rem; height: 10rem;', label='Large Spinner', type='grow')
+            
+            template(v-slot:cell(data.bank_name)="bankName")
+              b.text-secondary {{ bankName.value.replace(/[^a-zA-Z]+/g, ' ') }}
+            
+            template(v-slot:cell(data.min_amount)="minAmount")
+              b.text-secondary {{ minAmount.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
+            
+            template(v-slot:cell(data.max_amount)="maxAmount")
+              b.text-secondary {{ maxAmount.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
+              
         b-col(cols="6" sm="6" md="6").pt-3
           b-button(class="mt-4 text-center" variant="success" block) NEXT
 </template>
@@ -55,8 +68,11 @@ export default {
   computed: {
     agents: {
       get() {
-        //getters conditions
-        return this.$store.state.seller.all
+        if(this.$store.state.filterClient.isActive) {
+          return this.$store.getters.agentsFilterByAmount
+        } else {
+          return this.$store.getters.agentsFilter
+        }
       }
     }
   }
@@ -78,5 +94,11 @@ export default {
     position: absolute;
     top: 8px;
     left: 8px;
+  }
+  .close {
+    color: #FDFFFC!important;
+  }
+  .close:hover {
+    color: #E71D36!important;
   }
 </style>

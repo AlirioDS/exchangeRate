@@ -1,12 +1,20 @@
 import axios from "axios"
 
 const localBitcoinsURL = axios.create({
-  baseURL: 'https://localbitcoins.com/'
+  baseURL: 'https://localbitcoins.com/',
+  headers: {
+    'Content-Type': 'application/json',
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
+  },
+  mode: 'no-cors'
 })
 
 export default {
   async all(currency, market) {
-    let response = await localBitcoinsURL.get(`${market}/${currency}/transfers-with-specific-bank/.json`)
+    let response = await localBitcoinsURL.get(`${market}/${currency}/c/bank-transfers/.json`)
 
     if(response.data.pagination != null) {
       let agents = ""
@@ -14,7 +22,7 @@ export default {
       let pagination = 1
 
       while(true) {
-        response = await localBitcoinsURL.get(`${market}/${currency}/transfers-with-specific-bank/.json?page=${pagination}`)
+        response = await localBitcoinsURL.get(`${market}/${currency}/c/bank-transfers/.json?page=${pagination}`)
 
         if(agents != "") {
           nextAgents = JSON.stringify(response.data.data.ad_list).split("[")[1].split("]")[0]

@@ -1,10 +1,10 @@
 <template lang='pug'>
   b-form-select.mx-1(
     :id="`${Object.keys(this.market)[1]}`"
-    :value="this.market.id === 1 ? this.market.currencySeller : this.market.currencyBuyer"
+    :value="this.market.id === 1 ? this.market['buy-bitcoins-online'] : this.market['sell-bitcoins-online']"
     @change="getCurrency"
     :options="currencies"
-    :disabled="Object.keys(this.market)[1] === 'currencyBuyer' ? !this.$store.state.sellerIsSelect : this.$store.state.sellerIsSelect"
+    :disabled="Object.keys(this.market)[1] === 'sell-bitcoins-online' ? !this.$store.state.sellerIsSelect : this.$store.state.sellerIsSelect"
   )
 </template>
 
@@ -18,9 +18,11 @@
     },
     methods: {
       getCurrency(currency) {
-        let market = this.$el.id === "currencySeller" ? 'buy-bitcoins-online' : "sell-bitcoins-online"
+        let market = this.$el.id 
 
         if(currency != "") {
+          market  === 'buy-bitcoins-online' ? this.$store.state.seller.isSelect = true : this.$store.state.buyer.isSelect = true
+
           this.$store.dispatch('getAllAgents', { currency, market })
           
           let openModalOption = true
