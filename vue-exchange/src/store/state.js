@@ -31,12 +31,15 @@ export default {
   seller: {
     isSelect: false,
     all: [],
-    filterByAmount: []
+    filterByAmount: [],
+    select: []
   },
 
   buyer: {
     isSelect: false,
-    all: []
+    all: [],
+    filterByAmount: [],
+    select: []
   },
 
   modals: {

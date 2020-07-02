@@ -28,6 +28,11 @@
             :fields="fields"
             :filter="filterAgents"
             :busy="this.$store.state.agent.loading"
+            ref="selectableTable"
+            selectable
+            :select-mode="selectMode"
+            selected-variant="success"
+            @row-selected="onRowSelected"
           )
             template(v-slot:table-busy='')
               .text-center.text-success.my-2
@@ -41,9 +46,6 @@
             
             template(v-slot:cell(data.max_amount)="maxAmount")
               b.text-secondary {{ maxAmount.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
-              
-        b-col(cols="6" sm="6" md="6").pt-3
-          b-button(class="mt-4 text-center" variant="success" block) NEXT
 </template>
 
 <script>
@@ -52,6 +54,7 @@ export default {
     return {
       showModalTabletAgents: false,
       filterAgents: null,
+      selectMode: 'single',
       fields: [ 
         { 
           key: 'data.bank_name', label: 'Bank', thClass: 'table-header-sell'
@@ -74,6 +77,13 @@ export default {
           return this.$store.getters.agentsFilter
         }
       }
+    }
+  },
+  methods: {
+    onRowSelected(agentSelect) {
+      this.$root.$emit("bv::hide::modal", "modalTabletAgents")
+      this.$root.$emit("bv::hide::modal", "modalSorting")
+      return this.$store.commit("AGENT_SELECT", agentSelect)
     }
   }
 }

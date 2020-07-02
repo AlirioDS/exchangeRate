@@ -27,3 +27,7 @@ export const FILTER_CLIENT_IS_ACTIVE = (state, filterClientIsActive) => {
 export const MODALS = (state, modalIs) => {
   state.modals.openModalSortingOptions = modalIs
 }
+
+export const AGENT_SELECT = (state, agentSelect) => {
+  state.seller.isSelect ? state.seller.select = agentSelect : state.buyer.select = agentSelect
+}
