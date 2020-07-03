@@ -8,3 +8,7 @@ export const agentsFilter = (state) => {
     return 98 <= seller.data.profile.feedback_score || 100 > parseInt(seller.data.profile.trade_count.replace('+', '').replace(' ', ''))
   })
 }
+
+export const agentSelect = (state) => {
+  return state.seller.isSelect ? state.seller.select : state.buyer.select
+}

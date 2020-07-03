@@ -5,7 +5,9 @@
         CurrencySelector
     b-row
       b-col(cols='6' sm='6' md='6').pt-2
-        Card(v-if="this.$store.state.seller.select.length != 0")
+        Card(
+          v-if="this.$store.state.seller.select.length != 0"
+          )
     b-row
       ModalSortingOptions
       ModalAgentsSelection
