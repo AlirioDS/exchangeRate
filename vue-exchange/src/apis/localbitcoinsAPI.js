@@ -14,7 +14,10 @@ const localBitcoinsURL = axios.create({
 
 export default {
   async all(currency, market) {
-    let response = await localBitcoinsURL.get(`${market}/${currency}/c/bank-transfers/.json`)
+    let response
+    market === "sell-bitcoins-online"
+      ? response = await localBitcoinsURL.get(`${market}/${currency}/c/bank-transfers/.json`)
+      : response = await localBitcoinsURL.get(`${market}/${currency}/transfers-with-specific-bank/.json`)
 
     if(response.data.pagination != null) {
       let agents = ""
@@ -22,7 +25,9 @@ export default {
       let pagination = 1
 
       while(true) {
-        response = await localBitcoinsURL.get(`${market}/${currency}/c/bank-transfers/.json?page=${pagination}`)
+        market === "sell-bitcoins-online"
+          ? response = await localBitcoinsURL.get(`${market}/${currency}/c/bank-transfers/.json?page=${pagination}`)
+          : response = await localBitcoinsURL.get(`${market}/${currency}/transfers-with-specific-bank/.json?page=${pagination}`)
 
         if(agents != "") {
           nextAgents = JSON.stringify(response.data.data.ad_list).split("[")[1].split("]")[0]
@@ -30,7 +35,7 @@ export default {
         } else {
           agents = JSON.stringify(response.data.data.ad_list).split("[")[1].split("]")[0]
         }
-
+        
         pagination++
 
         if(response.data.pagination.next === undefined) {

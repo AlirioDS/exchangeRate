@@ -4,7 +4,7 @@
       b-col(cols='11').pt-2
         CurrencySelector
     b-row
-      b-col(cols='6' sm='6' md='6').pt-2
+      b-col(cols='12' sm='6' md='6').pt-2
         Card(
           v-if="this.$store.state.seller.select.length != 0"
           )

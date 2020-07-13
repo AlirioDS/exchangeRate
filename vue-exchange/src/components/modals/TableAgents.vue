@@ -2,7 +2,7 @@
   b-modal(
     id="modalTabletAgents"
     centered=true 
-    v-model="showModalTabletAgents"
+    v-model="openModalTable"
     title="Agents Selection"
     headerClass="header-modal"
     hide-footer
@@ -52,7 +52,6 @@
 export default {
   data() {
     return {
-      showModalTabletAgents: false,
       filterAgents: null,
       selectMode: 'single',
       fields: [ 
@@ -77,12 +76,22 @@ export default {
           return this.$store.getters.agentsFilter
         }
       }
-    }
+    },
+    openModalTable: {
+      get() {
+        return this.$store.state.modals.openModalTable
+      },
+      set(openModalTable) {
+        this.$store.commit('MODALS', openModalTable )
+      }
+    },
   },
   methods: {
     onRowSelected(agentSelect) {
       this.$root.$emit("bv::hide::modal", "modalTabletAgents")
       this.$root.$emit("bv::hide::modal", "modalSorting")
+      this.$store.state.seller.disabledSelect = false
+      this.$store.state.buyer.disabledSelect = true
       return this.$store.commit("AGENT_SELECT", agentSelect)
     }
   }

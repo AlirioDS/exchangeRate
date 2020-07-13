@@ -29,6 +29,7 @@ export default {
   },
 
   seller: {
+    disabledSelect: true,
     isSelect: false,
     all: [],
     filterByAmount: [],
@@ -36,6 +37,7 @@ export default {
   },
 
   buyer: {
+    disabledSelect: false,
     isSelect: false,
     all: [],
     filterByAmount: [],
@@ -43,6 +45,7 @@ export default {
   },
 
   modals: {
-    openModalSortingOptions: false
+    openModalSortingOptions: false,
+    openModalTable: false
   }
 }
