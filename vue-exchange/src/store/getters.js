@@ -4,9 +4,15 @@ export const agentsFilterByAmount = (state) => {
 }
 
 export const agentsFilter = (state) => {
-  return state.seller.all = state.seller.all.filter(seller => {
-    return 98 <= seller.data.profile.feedback_score || 100 > parseInt(seller.data.profile.trade_count.replace('+', '').replace(' ', ''))
-  })
+  if (state.seller.isSelect && !state.buyer.isSelect) {
+    return state.seller.all = state.seller.all.filter(seller => {
+      return 98 <= seller.data.profile.feedback_score || 100 > parseInt(seller.data.profile.trade_count.replace('+', '').replace(' ', ''))
+    })
+  } else {
+    return state.buyer.all = state.buyer.all.filter(seller => {
+      return 98 <= seller.data.profile.feedback_score || 100 > parseInt(seller.data.profile.trade_count.replace('+', '').replace(' ', ''))
+    })
+  }
 }
 
 export const agentSelect = (state) => {

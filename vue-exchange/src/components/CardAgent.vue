@@ -3,6 +3,7 @@
     b-card(
       no-body
       header-tag="header"
+      v-b-toggle.accordionAgentSelect
     )
       template(v-slot:header)
           b-container

@@ -7,6 +7,7 @@ export const getAllAgents = ({commit}, payload) => {
 
   getAgents.all(payload.currency, market)
   .then(response => {
+    console.log(response)
     commit('SET_AGENT', { response, market })
   })
   .catch(e => console.log(e))
