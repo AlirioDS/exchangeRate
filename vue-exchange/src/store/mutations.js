@@ -28,7 +28,13 @@ export const MODALS = (state, openModalOption) => {
 }
 
 export const AGENT_SELECT = (state, agentSelect) => {
-  state.seller.isSelect
-    ? state.seller.select = agentSelect
-    : state.buyer.select = agentSelect
+  if(state.seller.isSelect && !state.buyer.isSelect) {
+    state.seller.select = agentSelect
+    state.seller.disabledSelect = false
+    state.buyer.disabledSelect = true
+  } else {
+    state.buyer.select = agentSelect
+    state.buyer.disabledSelect = true
+    state.seller.disabledSelect = true
+  }
 }

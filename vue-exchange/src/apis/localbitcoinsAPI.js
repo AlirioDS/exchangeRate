@@ -35,7 +35,8 @@ export default {
         } else {
           agents = JSON.stringify(response.data.data.ad_list).split("[")[1].split("]")[0]
         }
-        
+
+        debugger
         pagination++
 
         if(response.data.pagination.next === undefined) {

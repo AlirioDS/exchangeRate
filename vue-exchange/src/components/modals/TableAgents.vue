@@ -18,7 +18,10 @@
               placeholder="Search"
             )
             span.search-icon
-              font-awesome-icon(icon='search' style="color: #2EC4B6;")
+              font-awesome-icon(
+                icon='search' 
+                style='color: #011627;'
+              )
         b-col(cols="12" sm="12" md="12" class="text-center").pt-2
           b-table(
             hover=''
@@ -31,11 +34,14 @@
             ref="selectableTable"
             selectable
             :select-mode="selectMode"
-            selected-variant="success"
             @row-selected="onRowSelected"
           )
-            template(v-slot:table-busy='')
+            template(v-if="this.$store.state.seller.isSelect && !this.$store.state.buyer.isSelect" v-slot:table-busy='')
               .text-center.text-success.my-2
+                b-spinner(style='width: 10rem; height: 10rem;', label='Large Spinner', type='grow')
+            
+            template(v-else v-slot:table-busy='')
+              .text-center.text-danger.my-2
                 b-spinner(style='width: 10rem; height: 10rem;', label='Large Spinner', type='grow')
             
             template(v-slot:cell(data.bank_name)="bankName")
@@ -56,13 +62,13 @@ export default {
       selectMode: 'single',
       fields: [ 
         { 
-          key: 'data.bank_name', label: 'Bank', thClass: 'table-header-sell'
+          key: 'data.bank_name', label: 'Bank', thClass: 'table-header'
         },
         {
-          key: 'data.min_amount', label: 'Min Amount', thClass: 'table-header-sell'
+          key: 'data.min_amount', label: 'Min Amount', thClass: 'table-header'
         },
         {
-          key: 'data.max_amount', label: 'Max Amount', thClass: 'table-header-sell'
+          key: 'data.max_amount', label: 'Max Amount', thClass: 'table-header'
         }
       ]
     }
@@ -90,8 +96,6 @@ export default {
     onRowSelected(agentSelect) {
       this.$root.$emit("bv::hide::modal", "modalTabletAgents")
       this.$root.$emit("bv::hide::modal", "modalSorting")
-      this.$store.state.seller.disabledSelect = false
-      this.$store.state.buyer.disabledSelect = true
       return this.$store.commit("AGENT_SELECT", agentSelect)
     }
   }
@@ -99,8 +103,8 @@ export default {
 </script>
 
 <style>
-  .table-header-sell {
-    background-color: #2EC4B6!important;
+  .table-header {
+    background-color: #011627!important;
     color: #FDFFFC!important;
   }
   .search-bar {
