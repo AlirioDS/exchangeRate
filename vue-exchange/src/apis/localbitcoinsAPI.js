@@ -7,45 +7,52 @@ const localBitcoinsURL = axios.create({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
     "Access-Control-Allow-Credentials": "true",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
+    "Access-Control-Allow-Methods": "GET"
   },
   mode: 'no-cors'
 })
 
 export default {
   async all(currency, market) {
-    let response
-    market === "sell-bitcoins-online"
-      ? response = await localBitcoinsURL.get(`${market}/${currency}/c/bank-transfers/.json`)
-      : response = await localBitcoinsURL.get(`${market}/${currency}/transfers-with-specific-bank/.json`)
+    let agents = []
 
-    if(response.data.pagination != null) {
-      let agents = ""
-      let nextAgents = ""
-      let pagination = 1
+    let URLToAgents = market === "sell-bitcoins-online"
+      ? `${market}/${currency}/c/bank-transfers/.json`
+      : `${market}/${currency}/transfers-with-specific-bank/.json`
 
-      while(true) {
-        market === "sell-bitcoins-online"
-          ? response = await localBitcoinsURL.get(`${market}/${currency}/c/bank-transfers/.json?page=${pagination}`)
-          : response = await localBitcoinsURL.get(`${market}/${currency}/transfers-with-specific-bank/.json?page=${pagination}`)
-
-        if(agents != "") {
-          nextAgents = JSON.stringify(response.data.data.ad_list).split("[")[1].split("]")[0]
-          agents = agents.concat(","+nextAgents)
+    const getAgents = async () => {
+      await localBitcoinsURL.get(URLToAgents)
+      .then(async res => {
+        if (res.data.pagination !== undefined) {
+          await paginateGetAgents()
         } else {
-          agents = JSON.stringify(response.data.data.ad_list).split("[")[1].split("]")[0]
+          return agents.push.apply(agents, res.data.data.ad_list) 
         }
-
-        debugger
-        pagination++
-
-        if(response.data.pagination.next === undefined) {
-          return JSON.parse(`[${agents}]`)
-        }
-      }
-    } else {
-      return response.data.data.ad_list
+      }).catch( error => {
+        console.log(error)
+        return error
+      })
     }
 
+    const paginateGetAgents = async (page = 1) => {
+      await localBitcoinsURL.get(`${URLToAgents}?page=${page}`)
+      .then(async res => {
+        if(res.data.pagination.next !== undefined) {
+          await paginateGetAgents(
+            page+1,
+            agents.push.apply(agents, res.data.data.ad_list)
+          )
+        } else {
+          return agents
+        } 
+      }).catch(error => {
+        console.log(error)
+        return error
+      })
+    }
+
+    await getAgents()
+
+    return agents
   }
 }
