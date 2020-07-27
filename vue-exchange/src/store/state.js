@@ -44,6 +44,14 @@ export default {
     select: []
   },
 
+  rates: {
+    rate : "",
+    tenPorcent: "",
+    eightPorcent: "",
+    sixPorcent: "",
+    threePorcent: ""
+  },
+
   modals: {
     openModalSortingOptions: false,
     openModalTable: false

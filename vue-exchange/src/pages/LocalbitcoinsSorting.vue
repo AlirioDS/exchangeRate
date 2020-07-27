@@ -14,6 +14,11 @@
         v-if="this.$store.state.buyer.select.length != 0"
       ).pt-2
         Card(:agentSelect='buyer')
+    b-row(align-h="center")
+      b-col(
+        cols='9'
+      ).pt-2
+        Rate
     b-row
       ModalSortingOptions
       ModalAgentsSelection
@@ -24,20 +29,27 @@
 import test from '../components/Test.vue'
 
 import CurrencySelector from '../components/CurrencySelector.vue'
+import Card from '../components/CardAgent.vue'
+import Rate from '../components/Rate.vue'
 import ModalSortingOptions from '../components/modals/SortingOptions.vue'
 import ModalAgentsSelection from '../components/modals/TableAgents.vue'
-import Card from '../components/CardAgent.vue'
 
 export default {
   name: 'LocalbitcoinsSorting',
-  components: { CurrencySelector, ModalSortingOptions, ModalAgentsSelection, Card },
+  components: { 
+    CurrencySelector,
+    Card,
+    Rate,
+    ModalSortingOptions,
+    ModalAgentsSelection 
+  },
   computed: {
     seller() {
       return {seller: this.$store.state.seller.select}
     },
     buyer() {
       return {buyer: this.$store.state.buyer.select}
-    },
+    }
   }
 }
 </script>

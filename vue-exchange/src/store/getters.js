@@ -18,3 +18,17 @@ export const agentsFilter = (state) => {
 export const agentSelect = (state) => {
   return state.seller.isSelect ? state.seller.select : state.buyer.select
 }
+
+export const rates = (state) => {
+
+  let rate = parseFloat(state.buyer.select[0].data.temp_price) / parseFloat(state.seller.select[0].data.temp_price)
+
+  state.rates.rate = rate.toFixed(2)
+  state.rates.tenPorcent = (rate + (rate * 0.1)).toFixed(2)
+  state.rates.eightPorcent = (rate + (rate * 0.08)).toFixed(2)
+  state.rates.sixPorcent = (rate + (rate * 0.06)).toFixed(2)
+  state.rates.threePorcent = (rate + (rate * 0.03)).toFixed(2)
+  state.rates.isReady = true
+
+  return state.rates
+}
