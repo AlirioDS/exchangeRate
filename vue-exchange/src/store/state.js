@@ -1,11 +1,13 @@
 export default {
   currencies: [
     { value: '', text: 'Currency' },
-    { value: 'clp', text: "CLP" },
-    { value: 'ves', text: "VES" },
-    { value: 'pen', text: "PEN" },
-    { value: 'cop', text: "COP" },
-    { value: 'usd', text: "USD" }
+    { value: 'ars', text: "ARS - Pesos Argentinos" },
+    { value: 'clp', text: "CLP - Pesos Chilenos" },
+    { value: 'cop', text: "COP - Pesos Colombianos" },
+    { value: 'pen', text: "PEN - Soles Peruanos" },
+    { value: 'pab', text: "PAB - Dolar Panameño" },
+    { value: 'usd', text: "USD - Dolar Estadounidense" },
+    { value: 'ves', text: "VES - Bolivares" },
   ],
 
   markets: [ 

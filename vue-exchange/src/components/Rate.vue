@@ -57,9 +57,11 @@ export default {
     border: 3px solid #FF9F1C;
   }
   table > thead > tr > th {
+    padding: 0.40rem!important;
     color: #FF9F1C;
   }
   .bg-maastricht-blue > table.table-bordered > tbody > tr > td {
+    padding: 0.40rem!important;
     border: 3px solid #FF9F1C;
   }
   .bg-maastricht-blue > table > tbody > tr > td {

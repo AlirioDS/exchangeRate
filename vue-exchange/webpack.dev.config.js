@@ -10,13 +10,13 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].js',
-    publicPath: 'http://192.168.0.16:3001/',
+    publicPath: 'http://192.168.1.84:3001/',
     chunkFilename: 'js/[id].[chunkhash].js'
   },
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),
     port: 3001,
-    host: '192.168.0.16',
+    host: '192.168.1.84',
     hot: true,
     historyApiFallback: true
   },

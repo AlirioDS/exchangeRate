@@ -20,14 +20,30 @@ export const agentSelect = (state) => {
 }
 
 export const rates = (state) => {
+  let rate = parseFloat(
+    state.buyer.select[0].data.temp_price) / parseFloat(state.seller.select[0].data.temp_price
+  )
+  
+  let currency = state.buyer.select[0].data.currency
 
-  let rate = parseFloat(state.buyer.select[0].data.temp_price) / parseFloat(state.seller.select[0].data.temp_price)
-
-  state.rates.rate = rate.toFixed(2)
-  state.rates.tenPorcent = (rate + (rate * 0.1)).toFixed(2)
-  state.rates.eightPorcent = (rate + (rate * 0.08)).toFixed(2)
-  state.rates.sixPorcent = (rate + (rate * 0.06)).toFixed(2)
-  state.rates.threePorcent = (rate + (rate * 0.03)).toFixed(2)
+  state.rates.rate = rate.toFixed(rate > 1 ? 2 : 4)
+  
+  state.rates.tenPorcent = (
+    currency === 'COP' ? (rate + (rate * 0.1)) : (rate - (rate * 0.1))
+  ).toFixed(rate > 1 ? 2 : 4)
+  
+  state.rates.eightPorcent = (
+    currency === 'COP' ? (rate + (rate * 0.08)) : (rate - (rate * 0.08))
+  ).toFixed(rate > 1 ? 2 : 4)
+  
+  state.rates.sixPorcent = (
+    currency === 'COP' ? (rate + (rate * 0.06)) : (rate - (rate * 0.06))
+  ).toFixed(rate > 1 ? 2 : 4)
+  
+  state.rates.threePorcent = (
+    currency === 'COP' ? (rate + (rate * 0.03)) : (rate - (rate * 0.03))
+  ).toFixed(rate > 1 ? 2 : 4)
+  
   state.rates.isReady = true
 
   return state.rates
