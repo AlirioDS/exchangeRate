@@ -1,13 +1,15 @@
 import axios from "axios"
 
 const localBitcoinsURL = axios.create({
-  baseURL: "https://localbitcoins.com/",
+  baseURL: "https://cors-anywhere.herokuapp.com/https://localbitcoins.com/",
   headers: {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
+    'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
   },
-  mode: "no-cors"
+
 })
 
 export default {
