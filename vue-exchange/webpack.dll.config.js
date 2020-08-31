@@ -18,7 +18,7 @@ module.exports = {
     ]
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../public'),
     filename: 'js/[name].[hash].dll.js',
     library: '[name]',
   },

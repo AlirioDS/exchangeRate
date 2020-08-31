@@ -41,9 +41,9 @@ export default {
     rates: {
       get() {
         if(this.$store.state.seller.select.length !== 0 && this.$store.state.buyer.select.length !== 0) {
-          return [ this.$store.getters.rates ]
+          return [ this.$store.state.rates ]
         }
-      }
+      },
     }
   }
 }

@@ -17,11 +17,13 @@
     b-row
       b-col(
         cols='12'
+        v-if='this.$store.state.rates.rate !== ""'
       ).pt-2
         Rate
     b-row(style='padding-bottom: 6rem;')
       b-col(
         cols='12'
+        v-if='this.$store.state.rates.rate !== ""'
       ).pt-2
         CalculateConversion
     b-row

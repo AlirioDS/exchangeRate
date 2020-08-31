@@ -13,9 +13,9 @@ module.exports = {
     app: path.resolve(__dirname,'src/index.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../public'),
     filename: 'js/[name].[hash].js',
-    publicPath: 'http://localhost:3001/',
+    publicPath: '/',
     chunkFilename: 'js/[id].[chunkhash].js'
   },
   optimization: {
@@ -46,13 +46,13 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
           },
-          'css-loader',
+          'css-loader'
         ]
       },
       {
-        test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm$/,
+        test: /\.(png|jpe|jpg|gif|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
         use: {
-          loader: 'url-loader',
+          loader: 'file-loader',
           options: {
             limit: 1000,
             name: '[hash].[ext]',
@@ -60,6 +60,18 @@ module.exports = {
           }
         }
       },
+      {
+        test: /\.pug$/,
+        oneOf: [
+          {
+            resourceQuery: /^\?vue/,
+            use: ['pug-plain-loader']
+          },
+          {
+            use: ['raw-loader', 'pug-plain-loader']
+          }
+        ]
+      }
     ]
   },
   plugins: [
@@ -75,7 +87,7 @@ module.exports = {
       manifest: require('./modules-manifest.json')
     }),
     new AddAssetHtmlPlugin({
-      filepath: path.resolve(__dirname, 'dist/js/*.dll.js'),
+      filepath: path.resolve(__dirname, '../public/js/*.dll.js'),
       outputPath: 'js',
       publicPath: 'js'
     }),

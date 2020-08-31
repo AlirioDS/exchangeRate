@@ -96,7 +96,7 @@ export default {
     onRowSelected(agentSelect) {
       this.$root.$emit("bv::hide::modal", "modalTabletAgents")
       this.$root.$emit("bv::hide::modal", "modalSorting")
-      return this.$store.commit("AGENT_SELECT", agentSelect)
+      this.$store.commit("AGENT_SELECT", agentSelect)
     }
   }
 }

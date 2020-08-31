@@ -1,15 +1,13 @@
 import axios from "axios"
 
 const localBitcoinsURL = axios.create({
-  baseURL: 'https://localbitcoins.com/',
+  baseURL: "https://localbitcoins.com/",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
-    "Access-Control-Allow-Credentials": "true",
-    "Access-Control-Allow-Methods": "GET"
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
   },
-  mode: 'no-cors'
+  mode: "no-cors"
 })
 
 export default {

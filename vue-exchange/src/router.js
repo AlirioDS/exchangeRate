@@ -6,27 +6,26 @@ import LocalbitcoinsSorting from './pages/LocalbitcoinsSorting.vue'
 import SortingOptions from './components/modals/SortingOptions.vue'
 import TableAgents from './components/modals/TableAgents.vue'
 
-import Sorting from './pages/Sorting.vue'
-
 Vue.use(Router)
 
 export default new Router({
+  mode: 'hash',
   routes: [
     {
       path: '/',
       name: 'home_path',
-      component: Home
+      component: Home,
+      meta: {
+        reload: true
+      }
     },
     {
       path: '/localbitcoinSorting',
       name: 'localbitcoins_sorting_path',
-      component: LocalbitcoinsSorting
-    },
-    {
-      path: '/sorting',
-      name: 'sorting_path',
-      component: Sorting
+      component: LocalbitcoinsSorting,
+      meta: {
+        reload: true
+      }
     }
-  ],
-  mode: 'history'
+  ]
 })

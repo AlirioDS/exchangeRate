@@ -15,6 +15,8 @@
             b-form-input(
               type="number"
               placeholder="Rate"
+              id="rateInput"
+              v-model="inputRate"
             )
         b-col(cols="7" sm="6" md="4").pt-3
           b-input-group
@@ -24,6 +26,8 @@
             b-form-input(
               type="number"
               placeholder="Client Amount"
+              id="clientAmountInput"
+              v-model="clientAmount"
             )
         b-col(cols="7" sm="6" md="5").pt-3
           b-input-group
@@ -34,6 +38,7 @@
               type="number"
               placeholder="BTC Mount"
               disabled=''
+              v-model="this.btcToBuy"
             )
         b-col(cols="5" sm="6" md="3").pt-3
           b-input-group
@@ -44,6 +49,7 @@
               type="number"
               placeholder="Profit"
               disabled=''
+              v-model="this.profit"
             )
         b-col(cols="12" sm="6" md="4").pt-3
           b-input-group
@@ -54,6 +60,7 @@
               type="number"
               placeholder="Mount to Transfer Purchase"
               disabled=''
+              v-model="this.mountToTransferSell"
             )
         b-col(cols="12" sm="6" md="5").pt-3
           b-input-group
@@ -64,12 +71,41 @@
               type="number"
               placeholder="Mount to Transfer Sale"
               disabled=''
+              v-model="this.localCurrencySeller"
             )
 </template>
 
 <script>
 export default {
-  name: 'CalculatorConversion'
+  name: 'CalculatorConversion',
+  data() {
+    return {
+      inputRate: '',
+      clientAmount: '',
+      btcToBuy: '',
+      localCurrencySeller: '',
+      mountToTransferSell: '',
+      profit: ''
+    }
+  },
+  watch: {
+    inputRate(event) {
+      this.conversionCalculate()
+    },
+    clientAmount(event){
+      this.conversionCalculate()
+    }
+  },
+  methods: {
+    conversionCalculate() {
+      if(this.inputRate.length !== 0 && this.clientAmount.length !== 0 ) {
+        this.mountToTransferSell = this.inputRate * this.clientAmount
+        this.btcToBuy = (this.mountToTransferSell / parseFloat(this.$store.state.buyer.select[0].data.temp_price)).toFixed(10)
+        this.localCurrencySeller = (this.btcToBuy * parseFloat(this.$store.state.seller.select[0].data.temp_price)).toFixed(2)
+        this.profit = (this.clientAmount - this.localCurrencySeller).toFixed(2)
+      }
+    }
+  }
 }
 </script>
 

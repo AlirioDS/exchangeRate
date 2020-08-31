@@ -8,15 +8,15 @@ module.exports = {
     app: path.resolve(__dirname,'src/index.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../public'),
     filename: 'js/[name].js',
-    publicPath: 'http://192.168.1.84:3001/',
+    publicPath: '/',
     chunkFilename: 'js/[id].[chunkhash].js'
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
+    contentBase: path.resolve(__dirname, '../public'),
     port: 3001,
-    host: '192.168.1.84',
+    host: '192.168.1.90',
     hot: true,
     historyApiFallback: true
   },

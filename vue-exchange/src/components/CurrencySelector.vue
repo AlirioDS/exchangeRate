@@ -1,6 +1,5 @@
 <template lang='pug'>
   b-card.text-center(
-    header="Buy / Sell"
     header-text-variant="white"
     no-body=''
     class="bg-maastricht-blue"
