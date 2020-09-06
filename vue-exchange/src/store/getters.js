@@ -1,17 +1,44 @@
+let clientAmount
+
 export const agentsFilterByAmount = (state) => {
-  let clientAmount = parseInt(state.filterClient.byAmount)
-  return state.seller.filterByAmount = state.seller.all.filter(seller => { return clientAmount >= parseInt(seller.data.min_amount) })
+  clientAmount = parseInt(state.filterClient.byAmount)
+  
+  return state.seller.filterByAmount = state.seller.all.filter(
+    seller => clientAmount >= parseInt(seller.data.min_amount)
+  )
 }
 
 export const agentsFilter = (state) => {
   if (state.seller.isSelect && !state.buyer.isSelect) {
-    return state.seller.all = state.seller.all.filter(seller => {
+    state.seller.all = state.seller.all.filter(seller => {
       return 98 <= seller.data.profile.feedback_score || 100 > parseInt(seller.data.profile.trade_count.replace('+', '').replace(' ', ''))
     })
+
+    if(state.filterClient.isActive) {
+      clientAmount = parseInt(state.filterClient.byAmount)
+
+      return state.seller.filterByAmount = state.seller.filterByAmount = state.seller.all.filter(
+        seller => clientAmount >= parseInt(seller.data.min_amount)
+      )
+    } else {
+      return state.seller.all
+    }
+
   } else {
-    return state.buyer.all = state.buyer.all.filter(seller => {
+    state.buyer.all = state.buyer.all.filter(seller => {
       return 98 <= seller.data.profile.feedback_score || 100 > parseInt(seller.data.profile.trade_count.replace('+', '').replace(' ', ''))
     })
+
+    if(state.filterClient.isActive && state.buyer.all.length !== 0) {
+      clientAmount = parseInt(state.filterClient.byAmount)
+      let sellerTempPrice = parseFloat(state.seller.select[0].data.temp_price)
+
+      return state.buyer.filterByAmount = state.buyer.all.filter(buyer => {
+        return (parseFloat(buyer.data.temp_price / sellerTempPrice) * clientAmount) >= parseFloat(buyer.data.min_amount)
+      })
+    } else {
+      return state.buyer.all
+    }
   }
 }
 

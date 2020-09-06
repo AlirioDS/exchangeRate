@@ -76,11 +76,7 @@ export default {
   computed: {
     agents: {
       get() {
-        if(this.$store.state.filterClient.isActive) {
-          return this.$store.getters.agentsFilterByAmount
-        } else {
-          return this.$store.getters.agentsFilter
-        }
+        return this.$store.getters.agentsFilter
       }
     },
     openModalTable: {
