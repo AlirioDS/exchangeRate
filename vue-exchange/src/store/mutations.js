@@ -1,3 +1,4 @@
+let rate
 
 export const LOADING_AGENT = (state, agent) => {
   agent === "buy-bitcoins-online"
@@ -37,32 +38,32 @@ export const AGENT_SELECT = (state, agentSelect) => {
     state.buyer.disabledSelect = true
     state.seller.disabledSelect = true
 
-    let rate = parseFloat(
-      state.buyer.select[0].data.temp_price) / parseFloat(state.seller.select[0].data.temp_price
-    )
-    
-    let currency = state.buyer.select[0].data.currency
+    let isCOPToVES = state.seller.select[0].data.currency === 'COP' && state.buyer.select[0].data.currency === 'VES'
+
+    rate = isCOPToVES 
+    ? parseFloat(state.seller.select[0].data.temp_price) / parseFloat(state.buyer.select[0].data.temp_price)
+    : parseFloat(state.buyer.select[0].data.temp_price) / parseFloat(state.seller.select[0].data.temp_price)
   
-    state.rates.rate = rate.toFixed(rate > 1 ? 2 : 4)
+    state.rates.rate = rate.toFixed(rate > 1 ? 2 : 6)
     
-    state.rates.tenPorcent = (
-      currency === 'COP' ? (rate + (rate * 0.1)) : (rate - (rate * 0.1))
-    ).toFixed(rate > 1 ? 2 : 4)
+    state.rates.tenPorcent = isCOPToVES 
+      ? (rate + (rate * 0.1)).toFixed(rate > 1 ? 2 : 6)
+      : (rate - (rate * 0.1)).toFixed(rate > 1 ? 2 : 6)
     
-    state.rates.eightPorcent = (
-      currency === 'COP' ? (rate + (rate * 0.08)) : (rate - (rate * 0.08))
-    ).toFixed(rate > 1 ? 2 : 4)
+    state.rates.eightPorcent = isCOPToVES 
+      ? (rate + (rate * 0.08)).toFixed(rate > 1 ? 2 : 6)
+      : (rate - (rate * 0.08)).toFixed(rate > 1 ? 2 : 6)
     
-    state.rates.sixPorcent = (
-      currency === 'COP' ? (rate + (rate * 0.06)) : (rate - (rate * 0.06))
-    ).toFixed(rate > 1 ? 2 : 4)
+    state.rates.sixPorcent = isCOPToVES 
+      ? (rate + (rate * 0.06)).toFixed(rate > 1 ? 2 : 6)
+      : (rate - (rate * 0.06)).toFixed(rate > 1 ? 2 : 6)
     
-    state.rates.threePorcent = (
-      currency === 'COP' ? (rate + (rate * 0.03)) : (rate - (rate * 0.03))
-    ).toFixed(rate > 1 ? 2 : 4)
+    state.rates.threePorcent = isCOPToVES 
+      ? (rate + (rate * 0.03)).toFixed(rate > 1 ? 2 : 6)
+      : (rate - (rate * 0.03)).toFixed(rate > 1 ? 2 : 6)
   }
 }
 
 export const RESET_ALL = (state) => {
-  debugger
+  
 }

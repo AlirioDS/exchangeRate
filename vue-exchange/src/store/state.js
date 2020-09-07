@@ -6,7 +6,7 @@ export default {
     { value: 'cop', text: "COP - Pesos Colombianos" },
     { value: 'pen', text: "PEN - Soles Peruanos" },
     { value: 'pab', text: "PAB - Dolar Panameño" },
-    { value: 'usd', text: "USD - Dolar Estadounidense" },
+    // { value: 'usd', text: "USD - Dolar Estadounidense" },
     { value: 'ves', text: "VES - Bolivares" },
   ],
 

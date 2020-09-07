@@ -99,9 +99,14 @@ export default {
   methods: {
     conversionCalculate() {
       if(this.inputRate.length !== 0 && this.clientAmount.length !== 0 ) {
-        this.mountToTransferSell = this.inputRate * this.clientAmount
+        this.$store.state.seller.select[0].data.currency === "COP" && this.$store.state.buyer.select[0].data.currency === "VES"
+          ? this.mountToTransferSell = (this.clientAmount / this.inputRate).toFixed(2)
+          : this.mountToTransferSell = (this.inputRate * this.clientAmount).toFixed(2)
+
         this.btcToBuy = (this.mountToTransferSell / parseFloat(this.$store.state.buyer.select[0].data.temp_price)).toFixed(10)
+
         this.localCurrencySeller = (this.btcToBuy * parseFloat(this.$store.state.seller.select[0].data.temp_price)).toFixed(2)
+        
         this.profit = (this.clientAmount - this.localCurrencySeller).toFixed(2)
       }
     }

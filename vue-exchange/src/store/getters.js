@@ -30,12 +30,18 @@ export const agentsFilter = (state) => {
     })
 
     if(state.filterClient.isActive && state.buyer.all.length !== 0) {
+      let isCopToVes = state.seller.select[0].data.currency === 'COP' && state.buyer.all[0].data.currency === 'VES'
+
       clientAmount = parseInt(state.filterClient.byAmount)
       let sellerTempPrice = parseFloat(state.seller.select[0].data.temp_price)
 
-      return state.buyer.filterByAmount = state.buyer.all.filter(buyer => {
-        return (parseFloat(buyer.data.temp_price / sellerTempPrice) * clientAmount) >= parseFloat(buyer.data.min_amount)
-      })
+      return isCopToVes 
+        ? state.buyer.filterByAmount = state.buyer.all.filter(buyer => {
+          return (clientAmount / (sellerTempPrice / parseFloat(buyer.data.temp_price))) >= parseFloat(buyer.data.min_amount) 
+        })
+        : state.buyer.filterByAmount = state.buyer.all.filter(buyer => {
+          return (parseFloat(buyer.data.temp_price / sellerTempPrice) * clientAmount) >= parseFloat(buyer.data.min_amount)
+        })
     } else {
       return state.buyer.all
     }
